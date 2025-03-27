@@ -1,10 +1,25 @@
 import { NewsGrid } from "@/components/news-grid";
-import { MOCK_NEWS_ARTICLES } from "@/lib/mock-data";
+import { ResponseNewsArticle } from "@/lib/types";
 
-export default function Home() {
+const fetchNews = async (query: string): Promise<ResponseNewsArticle> => {
+  const res = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}&q=${query}`
+  );
+  const data = await res.json();
+  return data;
+};
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const query = searchParams.q || "";
+  const news = await fetchNews(query);
+
   return (
     <>
-      <NewsGrid articles={MOCK_NEWS_ARTICLES} />
+      <NewsGrid articles={news.articles} />
     </>
   );
 }
