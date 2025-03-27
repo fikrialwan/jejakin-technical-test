@@ -1,9 +1,10 @@
-import { SearchHeader } from "@/components/search-header";
+import { NewsGrid } from "@/components/news-grid";
+import { MOCK_NEWS_ARTICLES } from "@/lib/mock-data";
 
 export default function Home() {
   return (
-    <main className="min-h-screen pb-8">
-      <SearchHeader />
-    </main>
+    <>
+      <NewsGrid articles={MOCK_NEWS_ARTICLES} />
+    </>
   );
 }

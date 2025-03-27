@@ -7,11 +7,16 @@ import { Newspaper } from "lucide-react";
 import { useRouter } from "next/navigation";
 export function SearchHeader() {
   const router = useRouter();
+  const [firstLoad, setFirstLoad] = useState(true);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
 
   useEffect(() => {
-    router.push(`/?q=${debouncedQuery}`);
+    if (firstLoad) {
+      setFirstLoad(false);
+    } else {
+      router.push(`/?q=${debouncedQuery}`);
+    }
   }, [debouncedQuery, router]);
 
   return (
