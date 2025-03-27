@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Fake news",
-  description: "Fake news sites",
+  title: "NewsHub",
+  description: "NewsHub - Your daily dose of news",
 };
 
 export default function RootLayout({

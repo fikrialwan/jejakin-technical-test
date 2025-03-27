@@ -14,7 +14,7 @@ interface NewsCardProps {
 export function NewsCard({ article }: NewsCardProps) {
   const [errorImage, setErrorImage] = useState(false);
   return (
-    <Card className="h-full flex flex-col">
+    <Card aria-label="article" className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">{article.title}</CardTitle>
         <p className="text-sm text-muted-foreground">
