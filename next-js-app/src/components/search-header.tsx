@@ -4,9 +4,18 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Newspaper } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { CATEGORY_OPTIONS } from "@/lib/constants";
 export function SearchHeader() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState(true);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
@@ -15,7 +24,11 @@ export function SearchHeader() {
     if (firstLoad) {
       setFirstLoad(false);
     } else {
-      router.push(`/?q=${debouncedQuery}`);
+      if (searchParams.has("category")) {
+        router.push(`/?category=${searchParams.get("category")}&q=${query}`);
+      } else {
+        router.push(`/?q=${debouncedQuery}`);
+      }
     }
   }, [debouncedQuery, router]);
 
@@ -31,10 +44,38 @@ export function SearchHeader() {
             <Input
               type="search"
               placeholder="Search news..."
-              className="max-w-2xl"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
+          </div>
+          <div className="hidden md:block">
+            <Select
+              onValueChange={(value) => {
+                if (searchParams.has("q")) {
+                  router.push(`/?q=${searchParams.get("q")}&category=${value}`);
+                } else {
+                  router.push(`/?category=${value}`);
+                }
+              }}
+              defaultValue={searchParams.get("category") || undefined}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORY_OPTIONS.map((category) => (
+                  <SelectItem
+                    key={category.value}
+                    value={category.value}
+                    defaultChecked={
+                      category.value === searchParams.get("category")
+                    }
+                  >
+                    {category.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
