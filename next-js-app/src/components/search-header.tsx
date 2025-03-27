@@ -13,6 +13,8 @@ import {
   SelectValue,
 } from "./ui/select";
 import { CATEGORY_OPTIONS } from "@/lib/constants";
+import { Button } from "./ui/button";
+import Link from "next/link";
 export function SearchHeader() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,10 +38,10 @@ export function SearchHeader() {
     <header className="sticky top-0 z-50 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center gap-4 sm:h-20">
-          <div className="flex items-center gap-2 font-semibold">
+          <Link href="/" className="flex items-center gap-2 font-semibold">
             <Newspaper className="h-6 w-6" />
             <span className="hidden sm:inline">NewsHub</span>
-          </div>
+          </Link>
           <div className="flex-1">
             <Input
               type="search"
@@ -77,6 +79,14 @@ export function SearchHeader() {
               </SelectContent>
             </Select>
           </div>
+          {(searchParams.has("q") || searchParams.has("category")) && (
+            <Button
+              className="hidden md:block"
+              onClick={() => router.push("/")}
+            >
+              Reset
+            </Button>
+          )}
         </div>
       </div>
     </header>
